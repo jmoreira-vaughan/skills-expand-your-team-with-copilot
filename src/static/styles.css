@@ -240,35 +240,6 @@ section h3 {
   letter-spacing: 0.3px;
 }
 
-/* Difficulty Badge */
-.difficulty-badge {
-  position: absolute;
-  top: 32px;
-  left: 8px;
-  font-size: 0.65rem;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  z-index: 1;
-}
-
-.difficulty-badge.beginner {
-  background: #c8e6c9;
-  color: #2e7d32;
-}
-
-.difficulty-badge.intermediate {
-  background: #fff9c4;
-  color: #f57f17;
-}
-
-.difficulty-badge.advanced {
-  background: #ffccbc;
-  color: #d84315;
-}
-
 /* Social sharing buttons */
 .share-buttons {
   display: flex;
