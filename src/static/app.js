@@ -44,6 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Authentication state
   let currentUser = null;
 
+  // Helper function to escape HTML to prevent XSS
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   // Time range mappings for the dropdown
   const timeRanges = {
     morning: { start: "06:00", end: "08:00" }, // Before school hours
@@ -520,18 +527,19 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     // Create social sharing buttons
+    const escapedName = escapeHtml(name);
     const shareButtons = `
       <div class="share-buttons">
-        <button class="share-btn" data-share-type="facebook" data-activity="${name}" title="Share on Facebook" aria-label="Share on Facebook">
+        <button class="share-btn" data-share-type="facebook" data-activity="${escapedName}" title="Share on Facebook" aria-label="Share on Facebook">
           <span class="share-icon" aria-hidden="true">📘</span>
         </button>
-        <button class="share-btn" data-share-type="twitter" data-activity="${name}" title="Share on Twitter" aria-label="Share on Twitter">
+        <button class="share-btn" data-share-type="twitter" data-activity="${escapedName}" title="Share on Twitter" aria-label="Share on Twitter">
           <span class="share-icon" aria-hidden="true">🐦</span>
         </button>
-        <button class="share-btn" data-share-type="email" data-activity="${name}" title="Share via Email" aria-label="Share via Email">
+        <button class="share-btn" data-share-type="email" data-activity="${escapedName}" title="Share via Email" aria-label="Share via Email">
           <span class="share-icon" aria-hidden="true">✉️</span>
         </button>
-        <button class="share-btn" data-share-type="copy" data-activity="${name}" title="Copy link" aria-label="Copy link to clipboard">
+        <button class="share-btn" data-share-type="copy" data-activity="${escapedName}" title="Copy link" aria-label="Copy link to clipboard">
           <span class="share-icon" aria-hidden="true">🔗</span>
         </button>
       </div>
@@ -781,8 +789,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleShare(event) {
     const shareType = event.currentTarget.dataset.shareType;
     const activityName = event.currentTarget.dataset.activity;
-    const activity = allActivities[activityName];
     
+    // Validate that the activity exists
+    const activity = allActivities[activityName];
     if (!activity) {
       showMessage("Activity not found", "error");
       return;
