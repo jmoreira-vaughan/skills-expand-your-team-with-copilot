@@ -205,6 +205,65 @@ section h3 {
   letter-spacing: 0.3px;
 }
 
+/* Social sharing buttons */
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px 0;
+  padding: 6px 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.share-btn {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.share-btn:hover,
+.share-btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background-color: var(--surface);
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.share-btn[data-share-type="facebook"]:hover {
+  border-color: #1877f2;
+  background-color: #e7f3ff;
+}
+
+.share-btn[data-share-type="twitter"]:hover {
+  border-color: #1da1f2;
+  background-color: #e8f5fd;
+}
+
+.share-btn[data-share-type="email"]:hover {
+  border-color: var(--primary);
+  background-color: #f0f0ff;
+}
+
+.share-btn[data-share-type="copy"]:hover {
+  border-color: var(--success);
+  background-color: var(--success-light);
+}
+
+.share-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
 /* Capacity Indicator */
 .capacity-container {
   margin: 8px 0;
