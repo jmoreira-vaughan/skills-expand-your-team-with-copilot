@@ -522,17 +522,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Create social sharing buttons
     const shareButtons = `
       <div class="share-buttons">
-        <button class="share-btn" data-share-type="facebook" data-activity="${name}" title="Share on Facebook">
-          <span class="share-icon">📘</span>
+        <button class="share-btn" data-share-type="facebook" data-activity="${name}" title="Share on Facebook" aria-label="Share on Facebook">
+          <span class="share-icon" aria-hidden="true">📘</span>
         </button>
-        <button class="share-btn" data-share-type="twitter" data-activity="${name}" title="Share on Twitter">
-          <span class="share-icon">🐦</span>
+        <button class="share-btn" data-share-type="twitter" data-activity="${name}" title="Share on Twitter" aria-label="Share on Twitter">
+          <span class="share-icon" aria-hidden="true">🐦</span>
         </button>
-        <button class="share-btn" data-share-type="email" data-activity="${name}" title="Share via Email">
-          <span class="share-icon">✉️</span>
+        <button class="share-btn" data-share-type="email" data-activity="${name}" title="Share via Email" aria-label="Share via Email">
+          <span class="share-icon" aria-hidden="true">✉️</span>
         </button>
-        <button class="share-btn" data-share-type="copy" data-activity="${name}" title="Copy link">
-          <span class="share-icon">🔗</span>
+        <button class="share-btn" data-share-type="copy" data-activity="${name}" title="Copy link" aria-label="Copy link to clipboard">
+          <span class="share-icon" aria-hidden="true">🔗</span>
         </button>
       </div>
     `;
@@ -818,13 +818,31 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
 
       case "copy":
-        // Copy link to clipboard
-        navigator.clipboard.writeText(shareUrl).then(() => {
-          showMessage("Link copied to clipboard!", "success");
-        }).catch((err) => {
-          console.error("Failed to copy link:", err);
-          showMessage("Failed to copy link", "error");
-        });
+        // Copy link to clipboard with fallback for older browsers
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            showMessage("Link copied to clipboard!", "success");
+          }).catch((err) => {
+            console.error("Failed to copy link:", err);
+            showMessage("Failed to copy link", "error");
+          });
+        } else {
+          // Fallback for older browsers or HTTP contexts
+          const textArea = document.createElement("textarea");
+          textArea.value = shareUrl;
+          textArea.style.position = "fixed";
+          textArea.style.left = "-9999px";
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+            document.execCommand("copy");
+            showMessage("Link copied to clipboard!", "success");
+          } catch (err) {
+            console.error("Fallback copy failed:", err);
+            showMessage("Failed to copy link", "error");
+          }
+          document.body.removeChild(textArea);
+        }
         break;
 
       default:
